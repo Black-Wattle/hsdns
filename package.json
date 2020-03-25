@@ -1,0 +1,26 @@
+{
+  "name": "hsdns",
+  "version": "1.0.0",
+  "description": "Simple and free DNS tool aimed at Handshake domains",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/black-wattle/hsdns.git"
+  },
+  "keywords": [
+    "hsd",
+    "hns",
+    "handshake",
+    "dns",
+    "nameserver"
+  ],
+  "author": "Lewi",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/black-wattle/hsdns/issues"
+  },
+  "homepage": "https://github.com/black-wattle/hsdns#readme"
+}
