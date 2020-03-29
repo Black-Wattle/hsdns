@@ -22,5 +22,8 @@
   "bugs": {
     "url": "https://github.com/black-wattle/hsdns/issues"
   },
-  "homepage": "https://github.com/black-wattle/hsdns#readme"
+  "homepage": "https://github.com/black-wattle/hsdns#readme",
+  "dependencies": {
+    "flat-cache": "^2.0.1"
+  }
 }
