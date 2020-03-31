@@ -71,7 +71,7 @@ const zoneInfo = async (settings, argv) => {
     token: settings.token
   }
 
-  const request = await fetch(settings.server + '/zone-info', {
+  const request = await fetch(useSSL(settings) + '/zone-info', {
     method: 'post',
     body: JSON.stringify(requestBody),
     headers: { 'Content-Type': 'application/json' }
@@ -95,7 +95,7 @@ const zoneAdd = async (settings, argv) => {
     token: settings.token
   }
 
-  const request = await fetch(settings.server + '/zone-add', {
+  const request = await fetch(useSSL(settings) + '/zone-add', {
     method: 'post',
     body: JSON.stringify(requestBody),
     headers: { 'Content-Type': 'application/json' }
@@ -107,7 +107,7 @@ const zoneAdd = async (settings, argv) => {
   console.log('To activate the the zone please add the following records:')
   console.log('')
   console.log(chalk.cyan('--- Type --- | ----------  Record --------'))
-  console.log('NS'.padding(13) + `|  ns.${argv[4]} ${settings.server}`)
+  console.log('NS'.padding(13) + `|  ${settings.server}`)
   console.log('TXT'.padding(13) + `|  ${record}`)
   console.log('')
 }
@@ -118,7 +118,7 @@ const zoneRemove = async (settings, argv) => {
     token: settings.token
   }
 
-  const request = await fetch(settings.server + '/zone-remove', {
+  const request = await fetch(useSSL(settings) + '/zone-remove', {
     method: 'post',
     body: JSON.stringify(requestBody),
     headers: { 'Content-Type': 'application/json' }
@@ -138,7 +138,7 @@ const recordAdd = async (settings, argv) => {
     token: settings.token
   }
 
-  const request = await fetch(settings.server + '/record-add', {
+  const request = await fetch(useSSL(settings) + '/record-add', {
     method: 'post',
     body: JSON.stringify(requestBody),
     headers: { 'Content-Type': 'application/json' }
@@ -158,7 +158,7 @@ const recordRemove = async (settings, argv) => {
     token: settings.token
   }
 
-  const request = await fetch(settings.server + '/record-remove', {
+  const request = await fetch(useSSL(settings) + '/record-remove', {
     method: 'post',
     body: JSON.stringify(requestBody),
     headers: { 'Content-Type': 'application/json' }
@@ -169,6 +169,12 @@ const recordRemove = async (settings, argv) => {
   console.log('')
   console.log('Record removed from', chalk.cyan.bold(argv[4] + '.'))
   console.log('')
+}
+
+const useSSL = settings => {
+  return settings.ssl
+    ? 'https://' + settings.server
+    : 'http://' + settings.server
 }
 
 module.exports = {

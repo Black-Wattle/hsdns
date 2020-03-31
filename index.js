@@ -1,19 +1,13 @@
+#!/usr/bin/env node
 const crypto = require('crypto')
 const fetch = require('node-fetch')
 
-const inquirer = require('inquirer')
 const chalk = require('chalk')
-const figlet = require('figlet')
-const shell = require('shelljs')
-const clear = require('clear')
-const clui = require('clui')
-const Spinner = clui.Spinner
-
 const server = require('./server')
 const db = require('./db')
 
 // Setup Default server
-const defaultServer = 'dns.hsd.tools'
+const defaultServer = 'ns.hsd.tools'
 
 let argv = process.argv // Args
 let argc = argv.length // Arg length
@@ -40,6 +34,7 @@ const run = async () => {
 
       const serverObj = {
         server: argv[3],
+        ssl: argv[4] === 'no-ssl' ? false : true,
         token: settings.token
       }
       db.set('settings', serverObj)
@@ -61,12 +56,14 @@ const run = async () => {
       )
       break
     case 'delete-my-keys':
-      const object = {
-        server: defaultServer,
-        token: generateToken()
-      }
-      db.set('settings', object)
+      db.remove()
       console.log(`You've reset the CLI`)
+      console.log(`Bye 😢`)
+      break
+    case 'help':
+      console.log('')
+      console.log('Here are the commands you are able to use:')
+      outputHelp()
       break
     default:
       outputHelp('Could not find that command!')
@@ -76,15 +73,23 @@ const run = async () => {
 
 const setupAccount = async settings => {
   if (!settings) {
-    console.log(chalk.blue('Welcome to hsdns! 👋'))
-    const spinner = new Spinner('Generating account keys..')
+    console.log(chalk.cyan.bold('Welcome to hsdns! 👋'))
+    console.log(
+      'This tool is a little CLI that lets you manage DNS records for a Zone.'
+    )
+    console.log(
+      "Out of the box it works with HSD.tools' free DNS server but you can run you own."
+    )
+    console.log(
+      'Set one up today: https://github.com/Black-Wattle/hsdns-server'
+    )
     // Create Settings
     const settingObj = {
       server: defaultServer,
+      ssl: true,
       token: generateToken()
     }
     db.set('settings', settingObj)
-
     return
   }
 }
@@ -105,9 +110,12 @@ const outputHelp = message => {
   console.log('      zone info', chalk.cyan('zoneName'))
   console.log('      zone add', chalk.cyan('zoneName'))
   console.log('      zone remove', chalk.cyan('zoneName'))
-  console.log('      record add', chalk.cyan('"zone IN TXT \'goes here\'"'))
-  console.log('      record remove', chalk.cyan('record-ID'))
-  console.log('      server', chalk.cyan('server'))
+  console.log(
+    '      record add',
+    chalk.cyan('zoneName "zoneName. IN A 8.8.8.8"')
+  )
+  console.log('      record remove', chalk.cyan('zoneName record-id'))
+  console.log('      server', chalk.cyan('server-url-or-ip'))
   console.log('      reset-cli')
 }
 

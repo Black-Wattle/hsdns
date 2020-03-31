@@ -13,4 +13,7 @@ const get = path => {
   return cache.getKey(path)
 }
 
-module.exports = { set, get }
+const remove = () => {
+  return flatCache.clearAll(path.resolve(homedir + '/.hsdns'))
+}
+module.exports = { set, get, remove }
